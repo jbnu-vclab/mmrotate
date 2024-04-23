@@ -46,17 +46,24 @@ def angle_loss(pred, target, beta=1.0, cos_weight=1.0):
     """
     assert pred.size() == target.size() and target.numel() > 0
 
-    xy_p = pred[:, :2]
-    xy_t = target[:, :2]
-
     # Smooth-L1 norm
-    diff = torch.abs(xy_p - xy_t)
+    diff = torch.abs(pred - target)
+    
+    adaptive_lambda = torch.tensor( \
+        #* [1.0,  1.0,  1.0,  1.0,  1.0], \
+        #* [0.95, 0.95, 0.95, 0.95, 1.2], \
+        #* [0.90, 0.90, 0.90, 0.90, 1.4], \
+        #* [0.85, 0.85, 0.85, 0.85, 1.6], \
+        #* [0.80, 0.80, 0.80, 0.80, 1.8], \
+        #* [0.75, 0.75, 0.75, 0.75, 2.0], \
+        [0.70, 0.70, 0.70, 0.70, 2.2], \
+        dtype=torch.float32, device=diff.device)
+
+    diff *= adaptive_lambda.unsqueeze(0)
     xy_loss = torch.where(diff < beta, 0.5 * diff * diff / beta,
                           diff - 0.5 * beta).sum(dim=-1)
     
-    adaptive_lambda = torch.tensor([0.5, 0.5, 0.5, 0.5, 1.0], dtype=torch.float32)
-    
-    loss = xy_loss * adaptive_lambda
+    loss = xy_loss
     
     return loss
 

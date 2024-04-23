@@ -28,12 +28,12 @@ test_pipeline = [
         ])
 ]
 data = dict(
-    samples_per_gpu=2,
-    workers_per_gpu=2,
+    samples_per_gpu=12,
+    workers_per_gpu=12,
     train=dict(
         type=dataset_type,
         classwise=False,
-        ann_file=data_root + 'ImageSets/trainval.txt',
+        ann_file=data_root + 'ImageSets/train.txt',
         ann_subdir=data_root + 'FullDataSet/Annotations/',
         img_subdir=data_root + 'FullDataSet/AllImages/',
         img_prefix=data_root + 'FullDataSet/AllImages/',
@@ -41,7 +41,7 @@ data = dict(
     val=dict(
         type=dataset_type,
         classwise=False,
-        ann_file=data_root + 'ImageSets/test.txt',
+        ann_file=data_root + 'ImageSets/val.txt',
         ann_subdir=data_root + 'FullDataSet/Annotations/',
         img_subdir=data_root + 'FullDataSet/AllImages/',
         img_prefix=data_root + 'FullDataSet/AllImages/',

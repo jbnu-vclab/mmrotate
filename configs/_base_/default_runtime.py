@@ -6,7 +6,7 @@ log_config = dict(
         # dict(type='TensorboardLoggerHook')
         dict(
             type='WandbLoggerHook', #WandbLoogerHook is ok
-            init_kwargs=dict(entity='tuna1210', project='PNID_Angle', name='Vanilla_roi_trans'),
+            init_kwargs=dict(entity='tuna1210', project='PNID_Angle', name='dota_orcnn_vanilla'),
             interval=50,
         ),
     ])
@@ -19,6 +19,6 @@ resume_from = None
 workflow = [('train', 1)]
 
 # disable opencv multithreading to avoid system being overloaded
-opencv_num_threads = 16
+opencv_num_threads = 12
 # set multi-process start method as `fork` to speed up the training
 mp_start_method = 'fork'
